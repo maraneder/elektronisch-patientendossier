@@ -5,17 +5,38 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="590e4785-44b5-45c6-985e-bde6ede58f9f" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/mara/elektronischpatientendossier/database/BehandelaarDatabase.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/mara/elektronischpatientendossier/database/BehandelingDatabase.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/mara/elektronischpatientendossier/database/NotitieDatabase.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/mara/elektronischpatientendossier/database/PatientDatabase.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/mara/elektronischpatientendossier/database/StatementFactory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/mara/elektronischpatientendossier/models/Behandelaar.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/mara/elektronischpatientendossier/models/Behandeling.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/mara/elektronischpatientendossier/models/Notitie.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/mara/elektronischpatientendossier/models/Patient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mara/elektronischpatientendossier/HelloApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mara/elektronischpatientendossier/HelloApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/mara/elektronischpatientendossier/hello-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/mara/elektronischpatientendossier/hello-view.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="2QYXZgZAoScPtQz7rzpSm5cBGPi" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -27,9 +48,21 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false"
+    "WebServerToolWindowFactoryState": "false",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/java/com/mara/elektronischpatientendossier/database" />
+    </key>
+  </component>
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="mvn clean install" />
+    </option>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -38,9 +71,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1685531552972</updated>
-      <workItem from="1685531558261" duration="16000" />
+      <workItem from="1685531558261" duration="6296000" />
     </task>
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -52,5 +88,15 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <ignored-roots>
+      <path value="$PROJECT_DIR$" />
+    </ignored-roots>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/elektronisch_patientendossier$HelloApplication.ic" NAME="HelloApplication Coverage Results" MODIFIED="1685536096808" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>com.mara.elektronischpatientendossier.*</FILTER>
+    </SUITE>
   </component>
 </project>
