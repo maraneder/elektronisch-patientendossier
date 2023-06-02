@@ -5,12 +5,16 @@ public class Notitie {
     private String notitie_text;
     private String datum;
     private Integer behandelaar_id;
+    private Integer patient_id;
 
-    public Notitie(Integer id, String notitie_text, String datum, Integer behandelaar_id) {
+
+
+    public Notitie(Integer id, String notitie_text, String datum, Integer behandelaar_id, Integer patient_id) {
         this.id = id;
         this.notitie_text = notitie_text;
         this.datum = datum;
         this.behandelaar_id = behandelaar_id;
+        this.patient_id = patient_id;
     }
 
     public Integer getId() {
@@ -45,6 +49,14 @@ public class Notitie {
         this.behandelaar_id = behandelaar_id;
     }
 
+    public Integer getPatient_id() {
+        return patient_id;
+    }
+
+    public void setPatient_id(Integer patient_id) {
+        this.patient_id = patient_id;
+    }
+
     @Override
     public String toString() {
         return "Notitie{" +
@@ -52,6 +64,7 @@ public class Notitie {
                 ", notitie_text='" + notitie_text + '\'' +
                 ", datum='" + datum + '\'' +
                 ", behandelaar_id=" + behandelaar_id +
+                ", patient_id=" + patient_id +
                 '}';
     }
 

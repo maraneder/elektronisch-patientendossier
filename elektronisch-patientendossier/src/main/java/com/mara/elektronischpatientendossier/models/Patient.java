@@ -11,10 +11,10 @@ public class Patient {
     private String diagnose;
     private String medicijnen;
     private String behandelend_arts;
-    private Integer behandling;
+    private Integer behandeling;
     private Integer behandelaar_id;
 
-    public Patient(Integer id, String voornaam, String achternaam, String geboortedatum, String telefoonnumer, String emailadres, String adres, String diagnose, String medicijnen, String behandelend_arts, Integer behandling, Integer behandelaar_id) {
+    public Patient(Integer id, String voornaam, String achternaam, String geboortedatum, String telefoonnumer, String emailadres, String adres, String diagnose, String medicijnen, String behandelend_arts, Integer behandeling, Integer behandelaar_id) {
         this.id = id;
         this.voornaam = voornaam;
         this.achternaam = achternaam;
@@ -25,7 +25,7 @@ public class Patient {
         this.diagnose = diagnose;
         this.medicijnen = medicijnen;
         this.behandelend_arts = behandelend_arts;
-        this.behandling = behandling;
+        this.behandeling = behandeling;
         this.behandelaar_id = behandelaar_id;
     }
 
@@ -109,12 +109,12 @@ public class Patient {
         this.behandelend_arts = behandelend_arts;
     }
 
-    public Integer getBehandling() {
-        return behandling;
+    public Integer getBehandeling() {
+        return behandeling;
     }
 
-    public void setBehandling(Integer behandling) {
-        this.behandling = behandling;
+    public void setBehandeling(Integer behandling) {
+        this.behandeling = behandling;
     }
 
     public Integer getBehandelaar_id() {
@@ -139,7 +139,7 @@ public class Patient {
                 ", diagnose='" + diagnose + '\'' +
                 ", medicijnen='" + medicijnen + '\'' +
                 ", behandelend_arts='" + behandelend_arts + '\'' +
-                ", behandling=" + behandling +
+                ", behandling=" + behandeling +
                 ", behandelaar_id=" + behandelaar_id +
                 '}';
     }
