@@ -1,11 +1,14 @@
 package com.mara.elektronischpatientendossier.database;
 
+import com.mara.elektronischpatientendossier.models.Notitie;
 import com.mara.elektronischpatientendossier.models.Patient;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PatientDatabase {
     public Patient getPatient(Integer idM) {
@@ -23,7 +26,7 @@ public class PatientDatabase {
             String voornaam = resultaat.getString("voornaam");
             String achternaam = resultaat.getString("achternaam");
             String geboortedatum = resultaat.getString("geboortedatum");
-            String telefoonnummer = resultaat.getString("telefoonnumer");
+            String telefoonnummer = resultaat.getString("telefoonnummer");
             String emailadres = resultaat.getString("emailadres");
             String adres = resultaat.getString("adres");
             String diagnose = resultaat.getString("diagnose");
@@ -44,6 +47,47 @@ public class PatientDatabase {
 
 
     }
+
+
+    public List<Patient> getAllPatients () {
+        Statement stm = StatementFactory.getInstance().createStatement();
+
+        List<Patient> patientList = new ArrayList<>();
+
+        // query notitie ophalen uit database
+        String query = String.format(
+                "SELECT * FROM patiënt"
+        );
+
+        try {
+            ResultSet resultaat = stm.executeQuery(query);
+            while (resultaat.next()) {
+                // een lijst aan maken zodat meerdere notities worden weergeven
+                Integer id = resultaat.getInt("id");
+                String voornaam = resultaat.getString("voornaam");
+                String achternaam = resultaat.getString("achternaam");
+                String geboortedatum = resultaat.getString("geboortedatum");
+                String telefoonnummer = resultaat.getString("telefoonnummer");
+                String emailadres = resultaat.getString("emailadres");
+                String adres = resultaat.getString("adres");
+                String diagnose = resultaat.getString("diagnose");
+                String medicijnen = resultaat.getString("medicijnen");
+                String behandelend_arts = resultaat.getString("behandelend_arts");
+                Integer behandeling = resultaat.getInt("behandeling");
+                Integer behandelaar_id = resultaat.getInt("behandelaar_id");
+
+                Patient patientP = new Patient(id, voornaam, achternaam, geboortedatum, telefoonnummer, emailadres, adres, diagnose, medicijnen, behandelend_arts, behandeling, behandelaar_id);
+                patientList.add(patientP);
+            }
+
+            return patientList;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
 
     public void opslaanPatient(Patient patient) {
         Statement stm = StatementFactory.getInstance().createStatement();
