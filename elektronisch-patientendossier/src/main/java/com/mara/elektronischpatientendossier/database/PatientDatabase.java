@@ -16,7 +16,7 @@ public class PatientDatabase {
 
         // query patient ophalen uit database
         String query = String.format(
-                "SELECT id, voornaam, achternaam, geboortedatum, telefoonnummer, emailadres, adres, diagnose, behandelend_arts, behandeling, behandelaar_id FROM patiënt WHERE id = %d LIMIT 1;",
+                "SELECT id, voornaam, achternaam, geboortedatum, telefoonnummer, emailadres, adres, diagnose, medicijnen, behandelend_arts, behandeling, behandelaar_id FROM patiënt WHERE id = %d LIMIT 1;",
         idM);
 
         try {
@@ -38,6 +38,8 @@ public class PatientDatabase {
 
             Patient patient = new Patient(id, voornaam, achternaam, geboortedatum, telefoonnummer,
                     emailadres, adres, diagnose, medicijnen, behandelend_arts, behandeling, behandelaar_id);
+
+
             return patient;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -93,7 +95,7 @@ public class PatientDatabase {
         Statement stm = StatementFactory.getInstance().createStatement();
 
         //query om dingen op te slaan in juiste kolommen in database
-        String query = String.format("INSERT INTO patient VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %d, %d);",
+        String query = String.format("INSERT INTO patiënt VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %d, %d);",
                 patient.getVoornaam(),
                 patient.getAchternaam(),
                 patient.getGeboortedatum(),
@@ -120,7 +122,7 @@ public class PatientDatabase {
         Statement stm = StatementFactory.getInstance().createStatement();
 
         //query om patientgegevens te updaten
-        String query = String.format("UPDATE patient SET voornaam = '%s', achternaam = '%s', geboortedatum = '%s', telefoonnummer = '%s', emailadres = '%s', adres = '%s', diagnose = '%s', medicijnen = '%s', behandelend_arts = '%s', behandeling = %d, behandelaar = %d) WHERE id = %d;",
+        String query = String.format("UPDATE patiënt SET voornaam = '%s', achternaam = '%s', geboortedatum = '%s', telefoonnummer = '%s', emailadres = '%s', adres = '%s', diagnose = '%s', medicijnen = '%s', behandelend_arts = '%s', behandeling = %d, behandelaar = %d) WHERE id = %d;",
                 patient.getVoornaam(),
                 patient.getAchternaam(),
                 patient.getGeboortedatum(),
@@ -149,7 +151,7 @@ public class PatientDatabase {
         Statement stm = StatementFactory.getInstance().createStatement();
 
         //query om patient te verwijderen
-        String query = String.format("DELETE * FROM patient WHERE id = %d;",
+        String query = String.format("DELETE * FROM patiënt WHERE id = %d;",
             patient.getId()
         );
 
