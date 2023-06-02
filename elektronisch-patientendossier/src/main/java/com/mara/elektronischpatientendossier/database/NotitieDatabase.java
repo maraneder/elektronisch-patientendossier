@@ -48,7 +48,7 @@ public class NotitieDatabase {
         Statement stm = StatementFactory.getInstance().createStatement();
 
         //query om dingen op te slaan in juiste kolommen in database
-        String query = String.format("INSERT INTO notitie VALUES ('%s', '%s', %d, %d);",
+        String query = String.format("INSERT INTO notitie (notitie_text, datum, behandelaar_id, patient_id) VALUES ('%s', '%s', %d, %d);",
                 notitie.getNotitie_text(),
                 notitie.getDatum(),
                 notitie.getBehandelaar_id(),
@@ -90,7 +90,7 @@ public class NotitieDatabase {
         Statement stm = StatementFactory.getInstance().createStatement();
 
         //query om notitie te verwijderen
-        String query = String.format("DELETE * FROM notitie WHERE id = %d;",
+        String query = String.format("DELETE FROM notitie WHERE id = %d;",
                 notitie.getId()
         );
 

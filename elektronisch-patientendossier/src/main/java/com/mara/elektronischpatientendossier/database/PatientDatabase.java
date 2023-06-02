@@ -95,7 +95,7 @@ public class PatientDatabase {
         Statement stm = StatementFactory.getInstance().createStatement();
 
         //query om dingen op te slaan in juiste kolommen in database
-        String query = String.format("INSERT INTO patiënt VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %d, %d);",
+        String query = String.format("INSERT INTO patiënt (id, voornaam, achternaam, geboortedatum, telefoonnummer, emailadres, adres, diagnose, medicijnen, behandelend_arts, behandeling, behandelaar_id) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %d, %d);",
                 patient.getVoornaam(),
                 patient.getAchternaam(),
                 patient.getGeboortedatum(),
