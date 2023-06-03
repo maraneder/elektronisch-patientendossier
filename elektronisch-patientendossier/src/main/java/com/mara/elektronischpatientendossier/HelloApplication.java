@@ -42,12 +42,51 @@ public class HelloApplication extends Application {
         root.setPadding(new Insets(40, 40,40, 40));
         root.setSpacing(40);
 
-        //while (login() == false);
+        while (login() == false); //kijkt of de gebruiker is ingelogd, als dat niet zo is moet er ingelogd worden
 
         navbar(root);
         hoofdscherm(root);
 
     }
+
+    public boolean login(){
+        //loginscherm maken
+        Dialog dialog = new Dialog<>();
+        dialog.setTitle("LOGIN");
+
+        VBox inlog = new VBox();
+
+        Text gebrnaamT = new Text("Gebruikersnaam:");
+        TextField gebrnaamTF = new TextField();
+        Text wachtwoordT = new Text("Wachtwoord:");
+        PasswordField wachtwoordP = new PasswordField();
+        inlog.getChildren().addAll(gebrnaamT, gebrnaamTF, wachtwoordT, wachtwoordP);
+        dialog.getDialogPane().setContent(inlog);
+
+        ButtonType okButtonType = new ButtonType("login", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().add(okButtonType);
+        Node okButton = dialog.getDialogPane().lookupButton(okButtonType);
+        okButton.addEventFilter(ActionEvent.ACTION, event -> {
+            //wachtwoord en gebruikersnaam moeten overeenkomen
+            if (!gebrnaamTF.getText().equals("maranederlof") || !wachtwoordP.getText().equals("wachtwoord"))
+
+            {
+                // foutmelding als niet alles is ingevuld
+                Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                errorAlert.setHeaderText("Vul correcte gegevens in!");
+                errorAlert.setContentText("Wachtwoord en/of gebruikersnaam incorrect");
+                errorAlert.showAndWait();
+
+                event.consume();
+                return;
+            }
+        });
+        //als alles klopt, returned de functie true en kan de gebruiker door naar de applicatie
+        dialog.showAndWait();
+        return true;
+    }
+
+
 
     public void navbar(HBox pane){
         // navigatie links
@@ -104,12 +143,14 @@ public class HelloApplication extends Application {
 
 
     public void behandelaarscherm(HBox pane) {
+        //tabel met behandelaren maken
         VBox lijstBehandelaren = new VBox();
         TableView<Behandelaar> tableBehandelaar = new TableView<>();
         TableColumn<Behandelaar, String> voornaamColumn = new TableColumn<>("Voornaam");
         TableColumn<Behandelaar, String> achternaamColumn = new TableColumn<>("Achternaam");
         TableColumn<Behandelaar, String> geboortedatumColumn = new TableColumn<>("Geboortedatum");
 
+        //data ophalen en in tabel zetten
         voornaamColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getVoornaam()));
         achternaamColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getAchternaam()));
         geboortedatumColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getGeboortedatum()));
@@ -117,7 +158,7 @@ public class HelloApplication extends Application {
         tableBehandelaar.getColumns().addAll(voornaamColumn, achternaamColumn, geboortedatumColumn);
 
         BehandelaarDatabase behandelaarDatabase = new BehandelaarDatabase();
-        List<Behandelaar> behandelaars = behandelaarDatabase.getAllBehandelaren(); // Fetch all patients from the database using the instance of PatientDatabase
+        List<Behandelaar> behandelaars = behandelaarDatabase.getAllBehandelaren(); // haalt de data uit de database
         tableBehandelaar.setItems(FXCollections.observableArrayList(behandelaars));
 
         tableBehandelaar.setPrefHeight(620);
@@ -131,6 +172,7 @@ public class HelloApplication extends Application {
 
 
     public void behandelingenscherm(HBox pane) {
+        //tabel met behandelingen maken
         VBox lijstBehandelingen = new VBox();
         TableView<Behandeling> tableBehandeling = new TableView<>();
         TableColumn<Behandeling, String> naamColumn = new TableColumn<>("Naam");
@@ -179,15 +221,15 @@ public class HelloApplication extends Application {
 
         tableView.setOnMouseClicked(event -> {
             if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
-                // Retrieve the selected patient from the TableView
+                // haal geselecteerde patient uit de tableview
                 Patient selectedPatient = tableView.getSelectionModel().getSelectedItem();
 
                 // Retrieve the complete information of the selected patient from the database
                 Patient completePatient = patientDatabase.getPatient(selectedPatient.getId());
 
                 if (completePatient != null) {
-                    // Display the complete information of the selected patient
-                    System.out.println(completePatient.toString());// Replace this with your own logic to display the information
+                    // laat complete informatie van de geselecteerde patient zien
+                    System.out.println(completePatient.toString());
                     pane.getChildren().clear();
                     navbar(root);
                     pane.getChildren().add(tableView);
@@ -252,12 +294,13 @@ public class HelloApplication extends Application {
         patientd.setVgap(5);
 
 
-
+        //tabel voor alle notities maken om ze erin te zetten
         TableView<Notitie> tableNote = new TableView<>();
         TableColumn<Notitie, String> datum = new TableColumn<>("Datum");
         TableColumn<Notitie, String> behandelaar_id = new TableColumn<>("Behandelaar");
         TableColumn<Notitie, String> notitie_text = new TableColumn<>("Notitie");
 
+        //data uit database halen
         datum.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getDatum()));
         behandelaar_id.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getBehandelaar_id().toString()));
         notitie_text.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getNotitie_text()));
@@ -266,7 +309,7 @@ public class HelloApplication extends Application {
         tableNote.getColumns().addAll(datum, behandelaar_id, notitie_text);
 
         NotitieDatabase noteDatabase = new NotitieDatabase();
-        List<Notitie> note = noteDatabase.getNotitie(p); // Fetch all notes from the database using the instance of PatientDatabase
+        List<Notitie> note = noteDatabase.getNotitie(p); // haal alle notities uit de database
         tableNote.setItems(FXCollections.observableArrayList(note));
 
         patientgegevens.getChildren().addAll(patientd, tableNote);
