@@ -1,13 +1,44 @@
 package com.mara.elektronischpatientendossier.database;
 
 import com.mara.elektronischpatientendossier.models.Behandelaar;
+import com.mara.elektronischpatientendossier.models.Behandeling;
 import com.mara.elektronischpatientendossier.models.Patient;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BehandelaarDatabase {
+
+    public List<Behandelaar> getAllBehandelaren() {
+        Statement stm = StatementFactory.getInstance().createStatement();
+
+        List<Behandelaar> behandelaarList = new ArrayList<>();
+
+        // query notitie ophalen uit database
+        String query = String.format("SELECT * FROM behandelaar");
+
+        try {
+            ResultSet resultaat = stm.executeQuery(query);
+            while (resultaat.next()) {
+                // een lijst aan maken zodat meerdere notities worden weergeven
+                Integer id = resultaat.getInt("id");
+                String voornaam = resultaat.getString("voornaam");
+                String achternaam = resultaat.getString("achternaam");
+                String geboortedatum = resultaat.getString("geboortedatum");
+
+                Behandelaar beh = new Behandelaar(id, voornaam, achternaam, geboortedatum);
+                behandelaarList.add(beh);
+            }
+
+            return behandelaarList;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     public Behandelaar getBehandelaar(Integer idM) {
         Statement stm = StatementFactory.getInstance().createStatement();

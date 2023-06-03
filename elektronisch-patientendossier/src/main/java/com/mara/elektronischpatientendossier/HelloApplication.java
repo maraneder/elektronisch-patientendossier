@@ -1,9 +1,7 @@
 package com.mara.elektronischpatientendossier;
 
-import com.mara.elektronischpatientendossier.database.BehandelingDatabase;
-import com.mara.elektronischpatientendossier.database.NotitieDatabase;
-import com.mara.elektronischpatientendossier.database.PatientDatabase;
-import com.mara.elektronischpatientendossier.database.StatementFactory;
+import com.mara.elektronischpatientendossier.database.*;
+import com.mara.elektronischpatientendossier.models.Behandelaar;
 import com.mara.elektronischpatientendossier.models.Behandeling;
 import com.mara.elektronischpatientendossier.models.Notitie;
 import com.mara.elektronischpatientendossier.models.Patient;
@@ -32,6 +30,7 @@ public class HelloApplication extends Application {
     HBox root = new HBox();
     private boolean hoofdschermDisplayed = false; // bool om bij te houden of hoofdscherm al is aangemaakt
     private boolean behandelingenSchermDisplayed = false;
+    private boolean behandelaarSchermDisplayed = false;
     @Override
     public void start(Stage stage) throws IOException {
         Scene scene = new Scene(root, 1200, 700);
@@ -76,6 +75,7 @@ public class HelloApplication extends Application {
                 hoofdscherm(pane);
                 hoofdschermDisplayed = true;
                 behandelingenSchermDisplayed = false; //zet behandelingenscherm op false zodat het weer klopt en als je naar behandelingenscherm gaat, je die te zien krijgt
+                behandelaarSchermDisplayed = false;
             }
         });
 
@@ -86,9 +86,48 @@ public class HelloApplication extends Application {
                 behandelingenscherm(pane);
                 behandelingenSchermDisplayed = true;
                 hoofdschermDisplayed = false; // zet hoofdscherm op false
+                behandelaarSchermDisplayed = false;
+            }
+        });
+
+        behandelaren.setOnAction(actionEvent -> {
+            if (!behandelaarSchermDisplayed) {
+                pane.getChildren().clear();
+                navbar(root);
+                behandelaarscherm(pane);
+                behandelaarSchermDisplayed = true;
+                hoofdschermDisplayed = false; // zet hoofdscherm op false
+                behandelingenSchermDisplayed = false;
             }
         });
     }
+
+
+    public void behandelaarscherm(HBox pane) {
+        VBox lijstBehandelaren = new VBox();
+        TableView<Behandelaar> tableBehandelaar = new TableView<>();
+        TableColumn<Behandelaar, String> voornaamColumn = new TableColumn<>("Voornaam");
+        TableColumn<Behandelaar, String> achternaamColumn = new TableColumn<>("Achternaam");
+        TableColumn<Behandelaar, String> geboortedatumColumn = new TableColumn<>("Geboortedatum");
+
+        voornaamColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getVoornaam()));
+        achternaamColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getAchternaam()));
+        geboortedatumColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getGeboortedatum()));
+
+        tableBehandelaar.getColumns().addAll(voornaamColumn, achternaamColumn, geboortedatumColumn);
+
+        BehandelaarDatabase behandelaarDatabase = new BehandelaarDatabase();
+        List<Behandelaar> behandelaars = behandelaarDatabase.getAllBehandelaren(); // Fetch all patients from the database using the instance of PatientDatabase
+        tableBehandelaar.setItems(FXCollections.observableArrayList(behandelaars));
+
+        tableBehandelaar.setPrefHeight(620);
+        tableBehandelaar.setPrefWidth(900);
+        lijstBehandelaren.getChildren().add(tableBehandelaar);
+
+        pane.getChildren().addAll(lijstBehandelaren);
+    }
+
+
 
 
     public void behandelingenscherm(HBox pane) {
@@ -113,7 +152,6 @@ public class HelloApplication extends Application {
 
         pane.getChildren().addAll(lijstBehandelingen);
     }
-
 
 
     public void hoofdscherm(HBox pane) {
