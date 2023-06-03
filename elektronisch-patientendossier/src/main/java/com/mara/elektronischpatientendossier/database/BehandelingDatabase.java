@@ -17,13 +17,13 @@ public class BehandelingDatabase {
 
         List<Behandeling> behandelingList = new ArrayList<>();
 
-        // query notitie ophalen uit database
+        // query behandeling ophalen uit database
         String query = String.format("SELECT * FROM behandeling");
 
         try {
             ResultSet resultaat = stm.executeQuery(query);
             while (resultaat.next()) {
-                // een lijst aan maken zodat meerdere notities worden weergeven
+                // een lijst aan maken zodat meerdere behandeling worden weergeven
                 Integer id = resultaat.getInt("id");
                 String naam = resultaat.getString("naam");
                 String beschrijving = resultaat.getString("beschrijving");
