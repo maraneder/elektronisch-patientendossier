@@ -1,8 +1,10 @@
 package com.mara.elektronischpatientendossier;
 
+import com.mara.elektronischpatientendossier.database.BehandelingDatabase;
 import com.mara.elektronischpatientendossier.database.NotitieDatabase;
 import com.mara.elektronischpatientendossier.database.PatientDatabase;
 import com.mara.elektronischpatientendossier.database.StatementFactory;
+import com.mara.elektronischpatientendossier.models.Behandeling;
 import com.mara.elektronischpatientendossier.models.Notitie;
 import com.mara.elektronischpatientendossier.models.Patient;
 import javafx.application.Application;
@@ -28,6 +30,8 @@ import java.util.List;
 
 public class HelloApplication extends Application {
     HBox root = new HBox();
+    private boolean hoofdschermDisplayed = false; // bool om bij te houden of hoofdscherm al is aangemaakt
+    private boolean behandelingenSchermDisplayed = false;
     @Override
     public void start(Stage stage) throws IOException {
         Scene scene = new Scene(root, 1200, 700);
@@ -63,6 +67,51 @@ public class HelloApplication extends Application {
 
         nav.setSpacing(20);
         pane.getChildren().add(nav);
+
+        // functie om te kijken of hoofdscherm() al bestaat, zodat er niet meerdere worden aangemaakt
+        patienten.setOnAction(actionEvent -> {
+            if (!hoofdschermDisplayed) {
+                pane.getChildren().clear();
+                navbar(root);
+                hoofdscherm(pane);
+                hoofdschermDisplayed = true;
+                behandelingenSchermDisplayed = false; //zet behandelingenscherm op false zodat het weer klopt en als je naar behandelingenscherm gaat, je die te zien krijgt
+            }
+        });
+
+        behandelingen.setOnAction(actionEvent -> {
+            if (!behandelingenSchermDisplayed) {
+                pane.getChildren().clear();
+                navbar(root);
+                behandelingenscherm(pane);
+                behandelingenSchermDisplayed = true;
+                hoofdschermDisplayed = false; // zet hoofdscherm op false
+            }
+        });
+    }
+
+
+    public void behandelingenscherm(HBox pane) {
+        VBox lijstBehandelingen = new VBox();
+        TableView<Behandeling> tableBehandeling = new TableView<>();
+        TableColumn<Behandeling, String> naamColumn = new TableColumn<>("Naam");
+        TableColumn<Behandeling, String> beschrijvingColumn = new TableColumn<>("Beschrijving");
+
+        naamColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getNaam()));
+        beschrijvingColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getBeschrijving()));
+
+
+        tableBehandeling.getColumns().addAll(naamColumn, beschrijvingColumn);
+
+        BehandelingDatabase behandelingDatabase = new BehandelingDatabase();
+        List<Behandeling> behandelings = behandelingDatabase.getAllBehandelingen(); // Fetch all patients from the database using the instance of PatientDatabase
+        tableBehandeling.setItems(FXCollections.observableArrayList(behandelings));
+
+        tableBehandeling.setPrefHeight(620);
+        tableBehandeling.setPrefWidth(900);
+        lijstBehandelingen.getChildren().add(tableBehandeling);
+
+        pane.getChildren().addAll(lijstBehandelingen);
     }
 
 
