@@ -73,7 +73,8 @@ public class NotitieDatabase {
                 notitie.getNotitie_text(),
                 notitie.getDatum(),
                 notitie.getBehandelaar_id(),
-                notitie.getPatient_id()
+                notitie.getPatient_id(),
+                notitie.getId()
         );
 
         System.out.println(query);

@@ -95,14 +95,15 @@ public class PatientDatabase {
         Statement stm = StatementFactory.getInstance().createStatement();
 
         //query om dingen op te slaan in juiste kolommen in database
-        String query = String.format("INSERT INTO patiënt (id, voornaam, achternaam, geboortedatum, telefoonnummer, emailadres, adres, diagnose, medicijnen, behandelend_arts, behandeling, behandelaar_id) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %d, %d);",
+        String query = String.format("INSERT INTO patiënt (voornaam, achternaam, geboortedatum, telefoonnummer, emailadres, adres, diagnose, medicijnen, behandelend_arts, behandeling, behandelaar_id) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %d, %d);",
                 patient.getVoornaam(),
                 patient.getAchternaam(),
                 patient.getGeboortedatum(),
-                patient.getTelefoonnumer(),
+                patient.getTelefoonnummer(),
                 patient.getEmailadres(),
                 patient.getAdres(),
                 patient.getDiagnose(),
+                patient.getMedicijnen(),
                 patient.getBehandelend_arts(),
                 patient.getBehandeling(),
                 patient.getBehandelaar_id()
@@ -122,14 +123,15 @@ public class PatientDatabase {
         Statement stm = StatementFactory.getInstance().createStatement();
 
         //query om patientgegevens te updaten
-        String query = String.format("UPDATE patiënt SET voornaam = '%s', achternaam = '%s', geboortedatum = '%s', telefoonnummer = '%s', emailadres = '%s', adres = '%s', diagnose = '%s', medicijnen = '%s', behandelend_arts = '%s', behandeling = %d, behandelaar = %d) WHERE id = %d;",
+        String query = String.format("UPDATE patiënt SET voornaam = '%s', achternaam = '%s', geboortedatum = '%s', telefoonnummer = '%s', emailadres = '%s', adres = '%s', diagnose = '%s', medicijnen = '%s', behandelend_arts = '%s', behandeling = %d, behandelaar_id = %d WHERE id = %d;",
                 patient.getVoornaam(),
                 patient.getAchternaam(),
                 patient.getGeboortedatum(),
-                patient.getTelefoonnumer(),
+                patient.getTelefoonnummer(),
                 patient.getEmailadres(),
                 patient.getAdres(),
                 patient.getDiagnose(),
+                patient.getMedicijnen(),
                 patient.getBehandelend_arts(),
                 patient.getBehandeling(),
                 patient.getBehandelaar_id(),
@@ -151,7 +153,7 @@ public class PatientDatabase {
         Statement stm = StatementFactory.getInstance().createStatement();
 
         //query om patient te verwijderen
-        String query = String.format("DELETE * FROM patiënt WHERE id = %d;",
+        String query = String.format("DELETE FROM patiënt WHERE id = %d;",
             patient.getId()
         );
 

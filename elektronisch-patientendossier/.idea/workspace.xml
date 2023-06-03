@@ -9,6 +9,7 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/com/mara/elektronischpatientendossier/HelloApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mara/elektronischpatientendossier/HelloApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/mara/elektronischpatientendossier/database/NotitieDatabase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mara/elektronischpatientendossier/database/NotitieDatabase.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/mara/elektronischpatientendossier/database/PatientDatabase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mara/elektronischpatientendossier/database/PatientDatabase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mara/elektronischpatientendossier/models/Patient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mara/elektronischpatientendossier/models/Patient.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,7 +62,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1685531552972</updated>
-      <workItem from="1685531558261" duration="32072000" />
+      <workItem from="1685531558261" duration="41112000" />
     </task>
     <servers />
   </component>

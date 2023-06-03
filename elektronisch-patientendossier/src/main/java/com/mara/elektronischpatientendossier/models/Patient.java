@@ -5,7 +5,7 @@ public class Patient {
     private String voornaam;
     private String achternaam;
     private String geboortedatum;
-    private String telefoonnumer;
+    private String telefoonnummer;
     private String emailadres;
     private String adres;
     private String diagnose;
@@ -14,12 +14,12 @@ public class Patient {
     private Integer behandeling;
     private Integer behandelaar_id;
 
-    public Patient(Integer id, String voornaam, String achternaam, String geboortedatum, String telefoonnumer, String emailadres, String adres, String diagnose, String medicijnen, String behandelend_arts, Integer behandeling, Integer behandelaar_id) {
+    public Patient(Integer id, String voornaam, String achternaam, String geboortedatum, String telefoonnummer, String emailadres, String adres, String diagnose, String medicijnen, String behandelend_arts, Integer behandeling, Integer behandelaar_id) {
         this.id = id;
         this.voornaam = voornaam;
         this.achternaam = achternaam;
         this.geboortedatum = geboortedatum;
-        this.telefoonnumer = telefoonnumer;
+        this.telefoonnummer = telefoonnummer;
         this.emailadres = emailadres;
         this.adres = adres;
         this.diagnose = diagnose;
@@ -61,12 +61,12 @@ public class Patient {
         this.geboortedatum = geboortedatum;
     }
 
-    public String getTelefoonnumer() {
-        return telefoonnumer;
+    public String getTelefoonnummer() {
+        return telefoonnummer;
     }
 
-    public void setTelefoonnumer(String telefoonnumer) {
-        this.telefoonnumer = telefoonnumer;
+    public void setTelefoonnummer(String telefoonnummer) {
+        this.telefoonnummer = telefoonnummer;
     }
 
     public String getEmailadres() {
@@ -113,8 +113,8 @@ public class Patient {
         return behandeling;
     }
 
-    public void setBehandeling(Integer behandling) {
-        this.behandeling = behandling;
+    public void setBehandeling(Integer behandeling) {
+        this.behandeling = behandeling;
     }
 
     public Integer getBehandelaar_id() {
@@ -133,7 +133,7 @@ public class Patient {
                 ", voornaam='" + voornaam + '\'' +
                 ", achternaam='" + achternaam + '\'' +
                 ", geboortedatum='" + geboortedatum + '\'' +
-                ", telefoonnumer='" + telefoonnumer + '\'' +
+                ", telefoonnummer='" + telefoonnummer + '\'' +
                 ", emailadres='" + emailadres + '\'' +
                 ", adres='" + adres + '\'' +
                 ", diagnose='" + diagnose + '\'' +

@@ -38,6 +38,9 @@ public class HelloApplication extends Application {
 
         root.setPadding(new Insets(40, 40,40, 40));
         root.setSpacing(40);
+
+        //while (login() == false);
+
         navbar(root);
         hoofdscherm(root);
 
@@ -61,6 +64,7 @@ public class HelloApplication extends Application {
         nav.setSpacing(20);
         pane.getChildren().add(nav);
     }
+
 
 
     public void hoofdscherm(HBox pane) {
@@ -126,7 +130,7 @@ public class HelloApplication extends Application {
         patientd.add(geboortedatumLabel, 0, 1);
         patientd.add(geboortedatumText,1, 1);
         Text telefoonnummerLabel = new Text("Telefoonnummer: ");
-        Text telefoonnumerText = new Text(p.getTelefoonnumer());
+        Text telefoonnumerText = new Text(p.getTelefoonnummer());
         patientd.add(telefoonnummerLabel, 2, 1);
         patientd.add(telefoonnumerText, 3, 1);
         Text emailadresLabel = new Text("Emailadres: ");
@@ -199,22 +203,48 @@ public class HelloApplication extends Application {
         btnDeleteNote.setMinSize(120, 20);
         buttons.setSpacing(20);
 
+        btnDeletePatient.setOnAction(actionEvent -> {
+            Patient selectedPatient = p; //geselecteerde patient binnenhalen
+            patientDeletePopup(selectedPatient); // popup starten
+        });
+
+        btnEditPatient.setOnAction(actionEvent -> {
+            Patient selectedPatient = p; //geselecteerde patient binnenhalen
+            Patient updatePatient = patientAanpasPopup(selectedPatient); //roept patientpopup op
+            if (updatePatient != null) { // checkt of de geupdate patient niet null is. zorgt ervoor dat de gebruiker ook veranderingen heeft gemaakt
+                PatientDatabase pdb = new PatientDatabase();
+                pdb.updatePatient(updatePatient); //stuurt aanpassing door naar de database
+                System.out.println("Patient updated successfully!");
+            }
+        });
+
+        btnNewPatient.setOnAction(actionEvent -> {
+            PatientDatabase pdb = new PatientDatabase();
+            Patient pat = patientAanmaakPopup();
+            pdb.opslaanPatient(pat); //stuurt patient door naar database
+        });
+
         btnDeleteNote.setOnAction(actionEvent -> {
-            Notitie selectedNote = tableNote.getSelectionModel().getSelectedItem();
-            noteDeletePopup(selectedNote);
-            System.out.println("hier");
+            Notitie selectedNote = tableNote.getSelectionModel().getSelectedItem(); // selecteerd de notite die verwijderd moet worden
+            noteDeletePopup(selectedNote); // laat notitie verwijderen
+
         });
 
         btnNewNote.setOnAction(actionEvent -> {
             NotitieDatabase ndb = new NotitieDatabase();
             Notitie notie = noteAanmaakPopup(p);
-            ndb.opslaanNotitie(notie);
+            ndb.opslaanNotitie(notie); // stuurt notitie door naar database
         });
 
         btnEditNote.setOnAction(actionEvent -> {
-            NotitieDatabase ndb = new NotitieDatabase();
-            Notitie noteAanpas = noteAanpasPopup(p);
-            ndb.updateNotitie(noteAanpas);
+                Notitie selectedNote = tableNote.getSelectionModel().getSelectedItem(); //haalt geselecteerde notitie
+                Notitie updatedNote = noteAanpasPopup(selectedNote); // opent popup
+
+                if (updatedNote != null) { // checkt of hij niet null is en zorgt ervoor dat er ook aanpassingen worden gedaan.
+                    NotitieDatabase ndb = new NotitieDatabase();
+                    ndb.updateNotitie(updatedNote); //stuurt door naar database
+                }
+
         });
 
         buttons.getChildren().addAll(btnNewPatient, btnEditPatient, btnDeletePatient, btnNewNote, btnEditNote, btnDeleteNote);
@@ -224,12 +254,323 @@ public class HelloApplication extends Application {
         return patientDetails;
     }
 
-    public void noteDeletePopup(Notitie not) {
-        Dialog dialog = new Dialog<>();
+
+    public void patientDeletePopup(Patient pat) {
+        Dialog dialog = new Dialog<>(); //popup scherm maken
         dialog.setTitle("BEVESTIGING");
         dialog.setHeaderText("BEVESTIG VERWIJDEREN");
 
-        GridPane bevestig = new GridPane();
+        ButtonType bevestigJaType = new ButtonType("BEVESTIG", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().add(bevestigJaType);
+        Node bevestigJa = dialog.getDialogPane().lookupButton(bevestigJaType); //bevestigings knopje
+
+        ButtonType bevestigNeeType = new ButtonType("ANNULEER", ButtonBar.ButtonData.CANCEL_CLOSE);
+        dialog.getDialogPane().getButtonTypes().add(bevestigNeeType);
+        Node bevestigNee = dialog.getDialogPane().lookupButton(bevestigNeeType); // annuleer knopje
+
+
+        bevestigJa.addEventFilter(ActionEvent.ACTION, event -> {
+            PatientDatabase pdb = new PatientDatabase();
+            pdb.deletePatient(pat); // als bevestigd is, delete patient
+        });
+
+        bevestigNee.addEventFilter(ActionEvent.ACTION, event -> {
+            // anders niets
+        });
+
+        dialog.showAndWait();
+    }
+
+
+    public Patient patientAanpasPopup(Patient pat){
+        Integer id = pat.getId();
+        String voornaam = null;
+        String achternaam = null;
+        String geboortedatum = null;
+        String telefoonnummer = null;
+        String emailadres = null;
+        String adres = null;
+        String diagnose = null;
+        String medicijnen = null;
+        String behandelend_arts = null;
+        Integer behandeling = null;
+        Integer behandelaar_id = null;
+
+
+
+        Dialog dialog = new Dialog<>(); //popup scherm maken
+        dialog.setTitle("Nieuwe patient aanmaken");
+        dialog.setHeaderText("Voer gegevens in");
+
+        GridPane invul = new GridPane();
+        // vakjes voor scherm om in te vullen
+        Text voornaamT = new Text("Voornaam: ");
+        invul.add(voornaamT, 0, 0);
+        TextField voornaamTF = new TextField();
+        invul.add(voornaamTF, 1, 0);
+
+        Text achternaamT = new Text("Achternaam: ");
+        invul.add(achternaamT, 0, 1);
+        TextField achternaamTF = new TextField();
+        invul.add(achternaamTF, 1, 1);
+
+        Text geboortedatumT = new Text("Geboortedatum: ");
+        invul.add(geboortedatumT, 0, 2);
+        TextField geboortedatumTF = new TextField();
+        invul.add(geboortedatumTF, 1, 2);
+
+        Text telefoonnummerT = new Text("Telefoonnummer: ");
+        invul.add(telefoonnummerT, 0, 3);
+        TextField telefoonnummerTF = new TextField();
+        invul.add(telefoonnummerTF, 1, 3);
+
+        Text emailadresT = new Text("Emailadres: ");
+        invul.add(emailadresT, 0, 4);
+        TextField emailadresTF = new TextField();
+        invul.add(emailadresTF, 1, 4);
+
+        Text adresT = new Text("Adres: ");
+        invul.add(adresT, 0, 5);
+        TextField adresTF = new TextField();
+        invul.add(adresTF, 1, 5);
+
+        Text diagnoseT = new Text("Diagnose: ");
+        invul.add(diagnoseT, 0, 6);
+        TextField diagnoseTF = new TextField();
+        invul.add(diagnoseTF, 1, 6);
+
+        Text medicijnenT = new Text("Medicijnen: ");
+        invul.add(medicijnenT, 0, 7);
+        TextField medicijnenTF = new TextField();
+        invul.add(medicijnenTF, 1, 7);
+
+        Text behandelend_artsT = new Text("Behandelend Arts: ");
+        invul.add(behandelend_artsT, 0, 8);
+        TextField behandelend_artsTF = new TextField();
+        invul.add(behandelend_artsTF, 1, 8);
+
+        Text behandelingT = new Text("Behandeling: ");
+        invul.add(behandelingT, 0, 9);
+        TextField behandelingTF = new TextField();
+        invul.add(behandelingTF, 1, 9);
+
+        Text behandelaar_idT = new Text("Uw behandelaar id: ");
+        invul.add(behandelaar_idT, 0, 10);
+        TextField behandelaar_idTF = new TextField();
+        invul.add(behandelaar_idTF, 1, 10);
+
+        ButtonType okButtonType = new ButtonType("Opslaan", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().add(okButtonType);
+        Node okButton = dialog.getDialogPane().lookupButton(okButtonType);
+        okButton.addEventFilter(ActionEvent.ACTION, event -> {
+            if (
+                // kijken of velden leeg zijn
+                    voornaamTF.getText().isEmpty() ||
+                            achternaamTF.getText().isEmpty() ||
+                            geboortedatumTF.getText().isEmpty() ||
+                            telefoonnummerTF.getText().isEmpty() ||
+                            emailadresTF.getText().isEmpty() ||
+                            adresTF.getText().isEmpty() ||
+                            diagnoseTF.getText().isEmpty() ||
+                            medicijnenTF.getText().isEmpty() ||
+                            behandelend_artsTF.getText().isEmpty() ||
+                            behandelingTF.getText().isEmpty() ||
+                            behandelaar_idTF.getText().isEmpty()
+            ) {
+                // foutmelding als niet alles is ingevuld
+                Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                errorAlert.setHeaderText("Vul alle gegevens in!");
+                errorAlert.setContentText("Controleer of u alle gegevens heeft ingevuld");
+                errorAlert.showAndWait();
+
+                event.consume();
+                return;
+            }
+
+            try {
+                Integer.parseInt(behandelaar_idTF.getText());
+                Integer.parseInt(behandelingTF.getText());
+            } catch (NumberFormatException ex) {
+                Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                errorAlert.setHeaderText("FOUT");
+                errorAlert.setContentText("Vul geldig id in");
+                errorAlert.showAndWait();
+                event.consume();
+                return;
+            }
+
+        });
+
+        dialog.getDialogPane().setContent(invul);
+
+        dialog.showAndWait();
+
+        // haalt info uit vakjes
+        voornaam = voornaamTF.getText();
+        achternaam = achternaamTF.getText();
+        geboortedatum = geboortedatumTF.getText();
+        telefoonnummer = telefoonnummerTF.getText();
+        emailadres = emailadresTF.getText();
+        adres = adresTF.getText();
+        diagnose = diagnoseTF.getText();
+        medicijnen = medicijnenTF.getText();
+        behandelend_arts = behandelend_artsTF.getText();
+        behandeling = Integer.parseInt(behandelingTF.getText());
+        behandelaar_id = Integer.parseInt(behandelaar_idTF.getText());
+
+        // maakt patientobject aan met informatie uit vakjes en geeft deze terug
+        Patient patient = new Patient(id, voornaam, achternaam, geboortedatum, telefoonnummer, emailadres, adres, diagnose, medicijnen, behandelend_arts, behandeling, behandelaar_id);
+        return patient;
+    }
+
+
+    public Patient patientAanmaakPopup(){
+        Integer id = null;
+        String voornaam = null;
+        String achternaam = null;
+        String geboortedatum = null;
+        String telefoonnummer = null;
+        String emailadres = null;
+        String adres = null;
+        String diagnose = null;
+        String medicijnen = null;
+        String behandelend_arts = null;
+        Integer behandeling = null;
+        Integer behandelaar_id = null;
+
+
+
+        Dialog dialog = new Dialog<>(); // popup aanmaken
+        dialog.setTitle("Nieuwe patient aanmaken");
+        dialog.setHeaderText("Voer gegevens in");
+
+        GridPane invul = new GridPane();
+        Text voornaamT = new Text("Voornaam: ");
+        invul.add(voornaamT, 0, 0);
+        TextField voornaamTF = new TextField();
+        invul.add(voornaamTF, 1, 0);
+
+        Text achternaamT = new Text("Achternaam: ");
+        invul.add(achternaamT, 0, 1);
+        TextField achternaamTF = new TextField();
+        invul.add(achternaamTF, 1, 1);
+
+        Text geboortedatumT = new Text("Geboortedatum: ");
+        invul.add(geboortedatumT, 0, 2);
+        TextField geboortedatumTF = new TextField();
+        invul.add(geboortedatumTF, 1, 2);
+
+        Text telefoonnummerT = new Text("Telefoonnummer: ");
+        invul.add(telefoonnummerT, 0, 3);
+        TextField telefoonnummerTF = new TextField();
+        invul.add(telefoonnummerTF, 1, 3);
+
+        Text emailadresT = new Text("Emailadres: ");
+        invul.add(emailadresT, 0, 4);
+        TextField emailadresTF = new TextField();
+        invul.add(emailadresTF, 1, 4);
+
+        Text adresT = new Text("Adres: ");
+        invul.add(adresT, 0, 5);
+        TextField adresTF = new TextField();
+        invul.add(adresTF, 1, 5);
+
+        Text diagnoseT = new Text("Diagnose: ");
+        invul.add(diagnoseT, 0, 6);
+        TextField diagnoseTF = new TextField();
+        invul.add(diagnoseTF, 1, 6);
+
+        Text medicijnenT = new Text("Medicijnen: ");
+        invul.add(medicijnenT, 0, 7);
+        TextField medicijnenTF = new TextField();
+        invul.add(medicijnenTF, 1, 7);
+
+        Text behandelend_artsT = new Text("Behandelend Arts: ");
+        invul.add(behandelend_artsT, 0, 8);
+        TextField behandelend_artsTF = new TextField();
+        invul.add(behandelend_artsTF, 1, 8);
+
+        Text behandelingT = new Text("Behandeling: ");
+        invul.add(behandelingT, 0, 9);
+        TextField behandelingTF = new TextField();
+        invul.add(behandelingTF, 1, 9);
+
+        Text behandelaar_idT = new Text("Uw behandelaar id: ");
+        invul.add(behandelaar_idT, 0, 10);
+        TextField behandelaar_idTF = new TextField();
+        invul.add(behandelaar_idTF, 1, 10);
+
+        ButtonType okButtonType = new ButtonType("Opslaan", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().add(okButtonType);
+        Node okButton = dialog.getDialogPane().lookupButton(okButtonType);
+        okButton.addEventFilter(ActionEvent.ACTION, event -> {
+            if (
+                // kijken of velden leeg zijn
+                    voornaamTF.getText().isEmpty() ||
+                            achternaamTF.getText().isEmpty() ||
+                            geboortedatumTF.getText().isEmpty() ||
+                            telefoonnummerTF.getText().isEmpty() ||
+                            emailadresTF.getText().isEmpty() ||
+                            adresTF.getText().isEmpty() ||
+                            diagnoseTF.getText().isEmpty() ||
+                            medicijnenTF.getText().isEmpty() ||
+                            behandelend_artsTF.getText().isEmpty() ||
+                            behandelingTF.getText().isEmpty() ||
+                            behandelaar_idTF.getText().isEmpty()
+            ) {
+                // foutmelding als niet alles is ingevuld
+                Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                errorAlert.setHeaderText("Vul alle gegevens in!");
+                errorAlert.setContentText("Controleer of u alle gegevens heeft ingevuld");
+                errorAlert.showAndWait();
+
+                event.consume();
+                return;
+            }
+
+            try {
+                Integer.parseInt(behandelaar_idTF.getText());
+                Integer.parseInt(behandelingTF.getText());
+            } catch (NumberFormatException ex) {
+                Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                errorAlert.setHeaderText("FOUT");
+                errorAlert.setContentText("Vul geldig id in");
+                errorAlert.showAndWait();
+                event.consume();
+                return;
+            }
+
+        });
+
+        dialog.getDialogPane().setContent(invul);
+
+        dialog.showAndWait();
+
+        //haalt ingevulde info uit vakjes
+        voornaam = voornaamTF.getText();
+        achternaam = achternaamTF.getText();
+        geboortedatum = geboortedatumTF.getText();
+        telefoonnummer = telefoonnummerTF.getText();
+        emailadres = emailadresTF.getText();
+        adres = adresTF.getText();
+        diagnose = diagnoseTF.getText();
+        medicijnen = medicijnenTF.getText();
+        behandelend_arts = behandelend_artsTF.getText();
+        behandeling = Integer.parseInt(behandelingTF.getText());
+        behandelaar_id = Integer.parseInt(behandelaar_idTF.getText());
+
+        //maakt patientobject met text uit de vakjes en geeft deze terug
+        Patient patient = new Patient(id, voornaam, achternaam, geboortedatum, telefoonnummer, emailadres, adres, diagnose, medicijnen, behandelend_arts, behandeling, behandelaar_id);
+        return patient;
+    }
+
+
+
+
+    public void noteDeletePopup(Notitie not) {
+        Dialog dialog = new Dialog<>(); // maakt popup
+        dialog.setTitle("BEVESTIGING");
+        dialog.setHeaderText("BEVESTIG VERWIJDEREN");
 
         ButtonType bevestigJaType = new ButtonType("BEVESTIG", ButtonBar.ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().add(bevestigJaType);
@@ -242,22 +583,22 @@ public class HelloApplication extends Application {
 
         bevestigJa.addEventFilter(ActionEvent.ACTION, event -> {
             NotitieDatabase ndb = new NotitieDatabase();
-            ndb.deleteNotitie(not);
+            ndb.deleteNotitie(not); // als bevestigd, delete notitie
         });
 
         bevestigNee.addEventFilter(ActionEvent.ACTION, event -> {
-
+            //anders niets
         });
 
         dialog.showAndWait();
     }
 
-    public Notitie noteAanpasPopup(Patient pat){
+    public Notitie noteAanpasPopup(Notitie not){
+        Integer id = not.getId();
         String notitie_text = null;
         String datum = null;
         Integer behandelaar_id = null;
-        Integer id = null;
-        Integer patient_id = pat.getId();
+        Integer patient_id = not.getPatient_id();
 
         Dialog dialog = new Dialog<>();
         dialog.setTitle("Notitie aanpassen");
@@ -392,6 +733,7 @@ public class HelloApplication extends Application {
         notitie_text = notitieTF.getText();
         datum = datumTF.getText();
 
+        //maakt notitie met info uit vakjes
         Notitie notitie = new Notitie(id, notitie_text, datum, behandelaar_id, patient_id);
         return notitie;
     }
